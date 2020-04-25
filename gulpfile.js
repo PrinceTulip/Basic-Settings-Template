@@ -24,6 +24,7 @@ const plumber = require('gulp-plumber');
 const browserSync = require('browser-sync').create();
 const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
+const spritesmith = require('gulp.spritesmith'); // npm install gulp.spritesmith
 
 const config = {
   mode: {
@@ -36,7 +37,9 @@ const config = {
 const paths =  {
   src: './src/',              // paths.src
   build: './build/'           // paths.build
+  //build: 'D:/xampp/htdocs/test/' // xampp local server
 };
+
 
 function svgSpriteBuild() {
   return gulp.src(paths.src + 'icons/*.svg')
@@ -65,7 +68,7 @@ function svgSpriteBuild() {
 };
 
 function styles() {
-  return gulp.src(paths.src + 'scss/main.scss')
+  return gulp.src(paths.src + 'scss/first.scss')
       .pipe(plumber())
       .pipe(sassGlob())
       .pipe(sass()) // { outputStyle: 'compressed' }
@@ -86,6 +89,15 @@ return(
     .pipe(uglify())
   .pipe(gulp.dest(paths.build + 'js/'))
 )
+}
+
+function spritesPng() {
+  const spriteData = gulp.src(paths.src + 'img/iconsSprite/*.png').pipe(spritesmith({
+    imgName: 'sprite.png',
+    cssName: 'sprite.css',
+    padding: 25
+  }));
+  return spriteData.pipe(gulp.dest(paths.build + 'icons'));
 }
 
 function htmls() {
@@ -115,6 +127,7 @@ function watch() {
   gulp.watch(paths.src + '*.html', htmls);
   gulp.watch(paths.src + 'img/*', img);
   gulp.watch(paths.src + 'favicon/*', favicon);
+  gulp.watch(paths.src + 'img/iconsSprite/*', spritesPng);
 
 }
 
@@ -136,6 +149,8 @@ exports.img = img;
 exports.favicon = favicon;
 exports.fonts = fonts;
 exports.svgSpriteBuild = svgSpriteBuild;
+exports.spritesPng = spritesPng;
+
 
 
 gulp.task('build', gulp.series(
@@ -145,12 +160,13 @@ gulp.task('build', gulp.series(
     htmls,
     img,
     fonts,
-    favicon
+    favicon,
+    spritesPng
     // gulp.parallel(styles, scripts, htmls, img, fonts)
 ));
 
 gulp.task('default', gulp.series(
     clean,
-    gulp.parallel(styles, scripts, htmls, img, svgSpriteBuild, fonts, favicon),
+    gulp.parallel(styles, scripts, htmls, img, svgSpriteBuild, fonts, favicon, spritesPng),
     gulp.parallel(watch, serve)
 ));
