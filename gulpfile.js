@@ -68,7 +68,7 @@ function svgSpriteBuild() {
 };
 
 function styles() {
-  return gulp.src(paths.src + 'scss/first.scss')
+  return gulp.src(paths.src + 'scss/main.scss')
       .pipe(plumber())
       .pipe(sassGlob())
       .pipe(sass()) // { outputStyle: 'compressed' }
