@@ -8,13 +8,25 @@ body {
   padding: 0;
   font-family: 'Ubuntu', Tahoma, sans-serif;
   font-size: 14px;
-  line-height: 24px;
+  line-height: 1.125;
   color: #fff;
   background-color: #000;
   box-sizing: border-box;
 }
 
-ul {
+html {
+  font-size: 16px;
+
+  @include tablets {
+    font-size: 14px;
+  }
+
+  @include phones {
+    font-size: 13px;
+  }
+}
+
+ul, ol {
   padding: 0;
   margin: 0;
   list-style-type: none;
@@ -41,12 +53,14 @@ img {
 .wrapper {
   overflow: hidden;
 }
+
 .container {
   max-width: 940px;
   width: 100%;
   padding: 0 10px;
   margin: 0 auto;
 }
+
 .row {
   display: flex;
 }

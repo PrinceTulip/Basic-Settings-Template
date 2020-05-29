@@ -1,5 +1,5 @@
 @mixin laptop {
-  @media (max-width: 989px) {
+  @media (max-width: 992px) {
     @content
   }
 }
@@ -22,9 +22,18 @@
   }
 }
 
+@function rem($p) {
+  @return $p / 16px+0rem;
+}
+
 @mixin placeholder {
   &::-webkit-input-placeholder { @content; }
   &:-moz-placeholder           { @content; }
   &::-moz-placeholder          { @content; }
   &:-ms-input-placeholder      { @content; }
+  &:focus::-webkit-input-placeholder { color: transparent; }
+  &:focus::-moz-placeholder   { color: transparent; }
+  &:focus::-moz-placeholder    { color: transparent; }
+  &:focus:-ms-input-placeholder   { color: transparent; }
 }
+
